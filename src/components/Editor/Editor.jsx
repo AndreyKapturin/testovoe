@@ -3,7 +3,7 @@ import s from './editor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import Builder from '../Bulder/Builder';
 import { changeElem } from '../../store/contentSlice';
-import { conf, parsePath } from '../../utils/utils';
+
 
 const Editor = () => {
   const dispatch = useDispatch();
@@ -12,8 +12,8 @@ const Editor = () => {
   function formSubmitter (e) {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
-    console.log(formData);
-    dispatch(changeElem({path: parsePath(formData.path, conf), newValue: formData.newValue}))
+
+    dispatch(changeElem({path: formData.path, newValue: formData.newValue}))
   }
 
   return (

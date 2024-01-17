@@ -27,6 +27,7 @@ export function parsePath (path, conf) {
   if (str !== '') {
     return new Error('Неверный путь')
   }
+  console.log(prop);
   return prop
 }
 
@@ -37,11 +38,18 @@ export function goPath (pathArr, state, newValue) {
       link = link[el]
     }
     else if (link[el] !== undefined && typeof link[el] !== 'object'){
-      link[el] = parseInt(newValue) || newValue;
+      link[el] = test(newValue);
+      // link[el] = parseInt(newValue) || newValue;
     }
     else {
-      return new Error('Неверный путь')
+      link[el] = test(newValue);
+      // return new Error('Неверный путь')
     }
   }
   return link;
+}
+
+
+function test (nw) {
+  return new Function('str',`let obj_from_str = typeof ${nw} !== 'function' && ${nw}; return obj_from_str`)();;
 }
