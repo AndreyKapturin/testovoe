@@ -35,6 +35,7 @@ const Editor = () => {
         <Builder content={content} />
       </div>
       <datalist id='jopa'>
+        <option>{'content[0].type'}</option>
         <option>{'content[0].props.width'}</option>
         <option>{'content[0].props.height'}</option>
         <option>{'content[0].props.visible'}</option>
