@@ -7,7 +7,7 @@ const Builder = ({content}) => {
   function builderElem (el) {
     switch(el.type) {
       case 'panel':
-        return <Panel key={el.type} props={el.props} />
+        return <Panel key={el.type} props={el.props} content={el.content} />
       case 'label':
         return <Label key={el.type} props={el.props} />
       case 'button':
