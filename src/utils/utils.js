@@ -40,10 +40,10 @@ export function goPath (pathStr, state, newValue) {
       link = link[el]
     }
     else if (link[el] !== undefined && typeof link[el] !== 'object'){
-      link[el] = parse(newValue);
+      link[el] = get_value_type(newValue);
     }
     else {
-      link[el] = parse(newValue);
+      link[el] = get_value_type(newValue);
     }
   }
   return link;
@@ -69,24 +69,32 @@ export function goPath (pathStr, state, newValue) {
 
 const regConfig = {
   type: /{.*type\s*:\s*'*"*(?<type>[\w\s]*)'*"*\s*.*}/i,
-  props: /.*{.*props\s*:\s*{.*}.*}/i,
   caption: /.*{.*{.*caption\s*:\s*('|")(?<caption>.*)('|").*}.*}/i,
   visible: /.*{.*{.*visible\s*:\s*(?<visible>(true|false)).*}.*}/i,
   width: /.*{.*{.*width\s*:\s*(?<width>\d*).*}.*}/i,
   height: /.*{.*{.*height\s*:\s*(?<height>\d*).*}.*}/i,
-  isObj: /.*{.*props\s*:.*{.*}.*}/i,
+  is_object: /{\s*type:\s*[\w\s'"]*, props: {[\w:\s'",]*}\s*}|{\s*props: {[\w:\s'",]*}, type:\s*[\w\s'"]*\s*}/,
+  is_number: /^\d*$/,
+  is_string: /^.*[^{}\[\]]$/,
+  is_boolean: /^true|false$/,
 };
 
-function parse(str) {
-  if (regConfig.isObj.test(str)) {
-    return string_to_object(str);
+export function get_value_type(str) {
+  if (regConfig.is_object.test(str)) {
+    return 'object';
   }
-  else {
-    return parseInt(str) || str;
+  if (regConfig.is_number.test(str)) {
+    return 'number';
+  }
+  if (regConfig.is_boolean.test(str)) {
+    return 'boolean';
+  }
+  if (regConfig.is_string.test(str)) {
+    return 'string';
   }
 }
 
-function string_to_object (str) {
+export function string_to_object (str) {
   let result;
   let type = str.match(regConfig.type).groups.type;
 
@@ -206,18 +214,17 @@ const value_types = {
   height: 'number',
   visible: 'boolean',
   caption: 'string',
-  type: new Error ('Нельзя изменять свойство "type"')
+  type: false,
 }
 
 export function get_type_of_value_by_path(keys_arr, state) {
 
-  let key, is_object, is_array, is_last_key, is_not_last_key, is_undefined;
+  let key, is_object, is_last_key, is_not_last_key, is_undefined;
 
   for (let i = 0; i < keys_arr.length; i++) {
 
     key = keys_arr[i];
     is_object = typeof state[key] === 'object';
-    is_array = Array.isArray(state[key]);
     is_last_key = i === keys_arr.length - 1;
     is_not_last_key = i < keys_arr.length - 1;
     is_undefined = state[key] === undefined;
@@ -227,44 +234,16 @@ export function get_type_of_value_by_path(keys_arr, state) {
       continue;
     }
 
-    if (is_object && is_last_key && key !== 'props' && !is_array) {
-      console.log(1);
+    if ((is_object || is_undefined) && is_last_key && !isNaN(key)) {
       return 'object';
     }
-    
-    if (is_object && is_last_key && key !== 'props' && is_array) {
-      console.log(2);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_object && is_last_key && key === 'props') {
-      console.log(3);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_undefined && is_last_key && keys_arr[i - 1] === 'content' && !isNaN(key)) {
-      console.log(4);
-      return 'object';
-    }
-    
-    if (is_undefined && is_not_last_key && keys_arr[i - 1] === 'content') {
-      console.log(5);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_undefined && keys_arr[i - 1] !== 'content') {
-      console.log(6);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_undefined) {
-      console.log(7);
-      return new Error('Указан неверный путь');
-    }
-    
+
     if (typeof state[key] !== 'object' && state[key] !== undefined) {;
-      console.log(8);
       return value_types[keys_arr.at(-1)];
     }
+    
   }
+
+  return false;
+
 }

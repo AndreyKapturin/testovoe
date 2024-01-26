@@ -40,13 +40,12 @@ const value_types = {
 
 export function get_type_of_value_by_path(keys_arr, state) {
 
-  let key, is_object, is_array, is_last_key, is_not_last_key, is_undefined;
+  let key, is_object, is_last_key, is_not_last_key, is_undefined;
 
   for (let i = 0; i < keys_arr.length; i++) {
 
     key = keys_arr[i];
     is_object = typeof state[key] === 'object';
-    is_array = Array.isArray(state[key]);
     is_last_key = i === keys_arr.length - 1;
     is_not_last_key = i < keys_arr.length - 1;
     is_undefined = state[key] === undefined;
@@ -56,46 +55,18 @@ export function get_type_of_value_by_path(keys_arr, state) {
       continue;
     }
 
-    if (is_object && is_last_key && key !== 'props' && !is_array) {
-      console.log(1);
+    if ((is_object || is_undefined) && is_last_key && !isNaN(key)) {
       return 'object';
     }
-    
-    if (is_object && is_last_key && key !== 'props' && is_array) {
-      console.log(2);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_object && is_last_key && key === 'props') {
-      console.log(3);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_undefined && is_last_key && keys_arr[i - 1] === 'content' && !isNaN(key)) {
-      console.log(4);
-      return 'object';
-    }
-    
-    if (is_undefined && is_not_last_key && keys_arr[i - 1] === 'content') {
-      console.log(5);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_undefined && keys_arr[i - 1] !== 'content') {
-      console.log(6);
-      return new Error('Указан неверный путь');
-    }
-    
-    if (is_undefined) {
-      console.log(7);
-      return new Error('Указан неверный путь');
-    }
-    
+
     if (typeof state[key] !== 'object' && state[key] !== undefined) {;
-      console.log(8);
       return value_types[keys_arr.at(-1)];
     }
+    
   }
+
+  return new Error('Указан неверный путь');
+
 }
 
 let tests = [
