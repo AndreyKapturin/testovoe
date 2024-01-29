@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { goPath } from '../utils/utils';
+import { change_value_by_path } from '../utils/utils';
 
 const initialState = {
   content: [
@@ -36,11 +36,7 @@ const contentSlice = createSlice({
   initialState,
   reducers: {
     changeElem(state, { payload }) {
-      try {
-        goPath(payload.path, state, payload.newValue);
-        } catch (error) {
-          console.log(new Error(error));
-        }
+      change_value_by_path(payload.path, state, payload.new_value);
     },
   },
 });
