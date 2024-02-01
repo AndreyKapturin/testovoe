@@ -1,11 +1,28 @@
+.editor {
+  width: 1000px;
+  margin: 50px auto;
+}
+
+.editor_header form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.editor_header form * {
+  width: 100%;
+}
+
+.input_wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.input_error {
+  color: red;
+}
+
 .content {
-  border: 5px solid red;
-}
-
-.valid {
-  border: 1px solid green;
-}
-
-.invalid {
-  border: 1px solid red;
+  box-shadow: 0 0 3px gray;
 }

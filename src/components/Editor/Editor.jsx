@@ -101,7 +101,7 @@ const Editor = () => {
         <form onSubmit={formSubmitter}>
           <label>
             Путь
-            <div>
+            <div className={s.input_wrapper}>
               <input
                 onBlur={validate_path}
                 name='path'
@@ -109,20 +109,20 @@ const Editor = () => {
                 list='paths'
                 autoComplete='off'
               />
-              {!!path_error && <span>{path_error}</span>}
+              {!!path_error && <span className={s.input_error}>{path_error}</span>}
             </div>
           </label>
           <label>
             Новое назначение
-            <div>
+            <div className={s.input_wrapper}>
               <input
                 onChange={validate_new_value}
                 name='new_value'
                 type='text'
                 disabled={path_is_valid ? false : true}
               />
-              {!!new_value_error && <p>{new_value_error}</p>}
-              {!!expected_value_type && <p>Введите значение с типом: {expected_value_type}</p>}
+              {!!new_value_error && <span className={s.input_error}>{new_value_error}</span>}
+              {!!expected_value_type && <span>Введите значение с типом: {expected_value_type}</span>}
             </div>
           </label>
           <button disabled={new_value_is_valid && path_is_valid ? false : true}>Применить</button>

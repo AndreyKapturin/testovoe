@@ -1,10 +1,10 @@
 import React from 'react';
 import Builder from '../Bulder/Builder';
+import s from './panel.module.css';
 
 const Panel = ({props, content}) => {
   return (
-    <div style={{width: props.width, height: props.height, border: '5px solid green', visibility: props.visible ? 'visible' : 'hidden'}}>
-      я панель
+    <div className={s.panel} style={{width: props.width, height: props.height, visibility: props.visible ? 'visible' : 'hidden'}}>
       {!!content && <Builder content={content} />}
     </div>
   );
