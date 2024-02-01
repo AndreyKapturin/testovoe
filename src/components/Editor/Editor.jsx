@@ -106,7 +106,6 @@ const Editor = () => {
                 onBlur={validate_path}
                 name='path'
                 type='text'
-                list='paths'
                 autoComplete='off'
               />
               {!!path_error && <span className={s.input_error}>{path_error}</span>}
@@ -131,19 +130,6 @@ const Editor = () => {
       <div className={s.content}>
         <Builder content={content} />
       </div>
-      <datalist id='paths'>
-        <option>{'content[3]'}</option>
-        <option>{'content[0].type'}</option>
-        <option>{'content[0].props.width'}</option>
-        <option>{'content[0].props.height'}</option>
-        <option>{'content[0].props.visible'}</option>
-        <option>{'content[0].content[0]'}</option>
-        <option>{'content[1].props.visible'}</option>
-        <option>{'content[1].props.caption'}</option>
-        <option>{'content[2].props.height'}</option>
-        <option>{'content[2].props.width'}</option>
-        <option>{'content[2].props.visible'}</option>
-      </datalist>
     </div>
   );
 };

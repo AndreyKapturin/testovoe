@@ -67,7 +67,7 @@ const regConfig = {
   visible: /.*{.*{.*visible\s*:\s*(?<visible>(true|false)).*}.*}/i,
   width: /.*{.*{.*width\s*:\s*(?<width>\d*).*}.*}/i,
   height: /.*{.*{.*height\s*:\s*(?<height>\d*).*}.*}/i,
-  is_object: /{\s*type:\s*[\w\s'"]*, props: {[\w:\s'",]*}\s*}|{\s*props: {[\w:\s'",]*}, type:\s*[\w\s'"]*\s*}/,
+  is_object: /{\s*type:\s*[\w\s'"]*, props: {.*}\s*}|{\s*props: {.*}, type:\s*[\w\s'"]*\s*}/,
   is_number: /^\d*$/,
   is_string: /^.*[^{}\[\]]$/,
   is_boolean: /^true|false$/,
